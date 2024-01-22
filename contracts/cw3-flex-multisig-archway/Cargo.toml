@@ -1,0 +1,43 @@
+[package]
+name = "cw3-flex-multisig-archway"
+version = "1.0.1"
+authors = [
+    "Ethan Frey <ethanfrey@users.noreply.github.com>",
+    "Fábio Soares <fsoares.developer@gmail.com>",
+]
+edition = "2021"
+description = "Implementing cw3 with multiple voting patterns and dynamic groups"
+license = "Apache-2.0"
+repository = "https://github.com/CosmWasm/cw-plus"
+homepage = "https://cosmwasm.com"
+documentation = "https://docs.cosmwasm.com"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+backtraces = ["cosmwasm-std/backtraces"]
+# use library feature to disable all instantiate/execute/query exports
+library = []
+
+[dependencies]
+cosmwasm-schema = { version = "1.1.0" }
+cw-utils = "1.0.1"
+cw2 = { path = "../../packages/cw2", version = "1.1.0" }
+cw3-archway = { path = "../../packages/cw3-archway", version = "1.0.1" }
+cw3-fixed-multisig-archway = { path = "../cw3-fixed-multisig-archway", version = "1.0.1", features = [
+    "library",
+] }
+cw4 = { path = "../../packages/cw4", version = "1.1.0" }
+cw20 = { path = "../../packages/cw20", version = "1.1.0" }
+cw-storage-plus = "1.0.1"
+cosmwasm-std = { version = "1.1.0" }
+schemars = "0.8.1"
+serde = { version = "1.0.103", default-features = false, features = ["derive"] }
+thiserror = { version = "1.0.23" }
+archway-bindings = { version = "0.2.1", git = "https://github.com/archway-network/arch3.rs", rev = "16baac9b1a41522a052f387ac3ca2538d1729bff" }
+
+[dev-dependencies]
+cw4-group = { path = "../cw4-group", version = "1.1.0" }
+cw-multi-test = "0.16.1"
+cw20-base = { path = "../cw20-base", version = "1.1.0" }

@@ -1,0 +1,22 @@
+[package]
+name = "cw3-archway"
+version = "1.0.1"
+authors = [
+    "Ethan Frey <ethanfrey@users.noreply.github.com>",
+    "Fábio Soares <fsoares.developer@gmail.com>",
+]
+edition = "2021"
+description = "CosmWasm-3 Interface: On-Chain MultiSig/Voting contracts, with Archway integration"
+license = "Apache-2.0"
+repository = "https://github.com/CosmWasm/cw-plus"
+homepage = "https://cosmwasm.com"
+
+[dependencies]
+cw-utils = "1.0.1"
+cw20 = "1.0.1"
+cosmwasm-schema = "1.1.0"
+cosmwasm-std = "1.1.0"
+schemars = "0.8.1"
+serde = { version = "1.0.103", default-features = false, features = ["derive"] }
+thiserror = { version = "1.0.23" }
+archway-bindings = { version = "0.2.1", git = "https://github.com/archway-network/arch3.rs", rev = "16baac9b1a41522a052f387ac3ca2538d1729bff" }
