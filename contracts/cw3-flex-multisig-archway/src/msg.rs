@@ -46,6 +46,9 @@ pub enum ExecuteMsg {
         record_ids: Vec<u64>,
         records_limit: Option<u64>,
     },
+    UpdateThreshold {
+        threshold: Threshold,
+    },
 }
 
 // We can also add this as a cw3 extension

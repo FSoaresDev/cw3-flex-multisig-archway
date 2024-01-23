@@ -16,7 +16,7 @@ use cw3_archway::{
 use cw3_fixed_multisig_archway::state::{next_id, BALLOTS, PROPOSALS};
 use cw4::{Cw4Contract, MemberChangedHookMsg, MemberDiff};
 use cw_storage_plus::Bound;
-use cw_utils::{maybe_addr, Expiration, ThresholdResponse};
+use cw_utils::{maybe_addr, Expiration, Threshold, ThresholdResponse};
 
 use crate::error::ContractError;
 use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
@@ -84,6 +84,9 @@ pub fn execute(
             record_ids,
             records_limit,
         } => execute_withdrawal_rewards(deps, env, info, record_ids, records_limit),
+        ExecuteMsg::UpdateThreshold { threshold } => {
+            execute_update_threshold(deps, env, info, threshold)
+        }
     }
 }
 
@@ -324,6 +327,29 @@ pub fn execute_withdrawal_rewards(
         }))
         .add_attribute("action", "withdrawal_rewards")
         .add_attribute("sender", info.sender))
+}
+
+pub fn execute_update_threshold(
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
+    threshold: Threshold,
+) -> ArchwayResult<ContractError> {
+    // only this contract can trigger this, so it needs to be passed through voting
+    if info.sender != env.contract.address {
+        return Err(ContractError::Unauthorized {});
+    }
+
+    let mut cfg = CONFIG.load(deps.storage)?;
+
+    let total_weight = cfg.group_addr.total_weight(&deps.querier)?;
+    threshold.validate(total_weight)?;
+
+    cfg.threshold = threshold;
+
+    CONFIG.save(deps.storage, &cfg)?;
+
+    Ok(Response::new().add_attribute("action", "update_threshold"))
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
